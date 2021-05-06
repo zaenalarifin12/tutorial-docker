@@ -1,0 +1,40 @@
+version: "3.7"
+
+services: 
+  mongo_container:
+    container_name: mongo_container
+    image: mongo:4.0.24
+    ports:
+      - 27017:27017
+    networks:
+      - golang_network
+  redis_container:
+    container_name: redis_container
+    image: redis:6.2.3-alpine
+    ports:
+      - 6379:6379
+    networks:
+      - golang_network
+  golang_docker:
+    container_name: golang_docker
+    image: golang:latest
+    ports:
+      - 8080:8080
+    depends_on:
+      - redis_container 
+      - mongo_container
+    environment:
+      - NAME=AAAA
+      - REDIS=AAAA
+    networks:
+    - golang_network
+
+networks:
+  golang_network:
+    name: golang_network
+
+# run 
+# docker-compose up -d
+# docker-compose down
+# docker-compose stop
+
